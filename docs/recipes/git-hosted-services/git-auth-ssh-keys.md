@@ -1,6 +1,6 @@
 # Git authentication with SSH keys
 
-When using [environment variables](../usage/ci-configuration.md#authentication) to set up the Git authentication, the remote Git repository will automatically be accessed via [https](https://git-scm.com/book/en/v2/Git-on-the-Server-The-Protocols#_the_http_protocols), independently of the [`repositoryUrl`](../usage/configuration.md#repositoryurl) format configured in the **semantic-release** [Configuration](../usage/configuration.md#configuration) (the format will be automatically converted as needed).
+When using [environment variables](../../usage/ci-configuration.md#authentication) to set up the Git authentication, the remote Git repository will automatically be accessed via [https](https://git-scm.com/book/en/v2/Git-on-the-Server-The-Protocols#_the_http_protocols), independently of the [`repositoryUrl`](../../usage/configuration.md#repositoryurl) format configured in the **semantic-release** [Configuration](../../usage/configuration.md#configuration) (the format will be automatically converted as needed).
 
 Alternatively the Git repository can be accessed via [SSH](https://git-scm.com/book/en/v2/Git-on-the-Server-The-Protocols#_the_ssh_protocol) by creating SSH keys, adding the public one to your Git hosted account and making the private one available on the CI environment.
 
@@ -21,6 +21,7 @@ This will generate a public key in `git_deploy_key.pub` and a private key in `gi
 ## Adding the SSH public key to the Git hosted account
 
 Step by step instructions are provided for the following Git hosted services:
+
 - [GitHub](#adding-the-ssh-public-key-to-github)
 
 ### Adding the SSH public key to GitHub
@@ -44,6 +45,7 @@ See [Adding a new SSH key to your GitHub account](https://help.github.com/articl
 In order to be available on the CI environment, the SSH private key must be encrypted, committed to the Git repository and decrypted by the CI service.
 
 Step by step instructions are provided for the following environments:
+
 - [Travis CI](#adding-the-ssh-private-key-to-travis-ci)
 - [Circle CI](#adding-the-ssh-private-key-to-circle-ci)
 
@@ -109,7 +111,7 @@ $ git push
 
 ### Adding the SSH private key to Circle CI
 
-First we encrypt the `git_deploy_key` (private key) using a symmetric encryption (AES-256).  Run the following `openssl` command and *make sure to note the output which we'll need later*:
+First we encrypt the `git_deploy_key` (private key) using a symmetric encryption (AES-256). Run the following `openssl` command and _make sure to note the output which we'll need later_:
 
 ```bash
 $ openssl aes-256-cbc -e -p -in git_deploy_key -out git_deploy_key.enc -K `openssl rand -hex 32` -iv `openssl rand -hex 16`
@@ -119,6 +121,7 @@ iv =VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
 ```
 
 Add the following [environment variables](https://circleci.com/docs/2.0/env-vars/#adding-environment-variables-in-the-app) to Circle CI:
+
 - `SSL_PASSPHRASE` - the value set during the [SSH keys generation](#generating-the-ssh-keys) step.
 - `REPO_ENC_KEY` - the `key` (KKK) value from the `openssl` step above.
 - `REPO_ENC_IV` - the `iv` (VVV) value from the `openssl` step above.
